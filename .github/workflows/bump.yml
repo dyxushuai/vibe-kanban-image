@@ -1,0 +1,39 @@
+name: bump-upstream
+
+on:
+  schedule:
+    # Every 6 hours
+    - cron: "0 */6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  bump:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Bump upstream ref
+        id: bump
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          ./scripts/bump-upstream.sh
+          echo "upstream_ref=$(tr -d ' \n' < UPSTREAM_REF)" >> "$GITHUB_OUTPUT"
+
+      - name: Create PR
+        uses: peter-evans/create-pull-request@v6
+        with:
+          title: "chore: bump upstream to ${{ steps.bump.outputs.upstream_ref }}"
+          commit-message: "chore: bump upstream to ${{ steps.bump.outputs.upstream_ref }}"
+          branch: "bot/bump-upstream"
+          delete-branch: true
+          body: |
+            Updates pinned upstream release ref and compose example defaults.

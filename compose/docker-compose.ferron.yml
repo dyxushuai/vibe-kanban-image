@@ -1,0 +1,31 @@
+services:
+  vibe-kanban:
+    image: ${VIBE_KANBAN_IMAGE}:${VIBE_KANBAN_TAG}
+    container_name: vibe-kanban
+    environment:
+      HOST: 0.0.0.0
+      PORT: 8080
+    expose:
+      - "8080"
+    volumes:
+      - ./data:/data
+      - ${PROJECTS_DIR:-~/code}:/repos:rw
+    restart: unless-stopped
+
+  ferron:
+    image: ferronserver/ferron:2
+    container_name: vibe-kanban-ferron
+    depends_on:
+      - vibe-kanban
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./ferron/ferron.kdl:/etc/ferron.kdl:ro
+      # Needed for persistent automatic TLS cache
+      - ferron-acme:/var/cache/ferron-acme
+    restart: unless-stopped
+
+volumes:
+  ferron-acme:
+
