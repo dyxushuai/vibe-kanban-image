@@ -1,4 +1,6 @@
 /upstream/
 /compose/.env
 /compose/data/
-
+/compose/pingap/certs/*
+!/compose/pingap/certs/.gitkeep
+/docs/plans/

@@ -12,21 +12,20 @@ services:
       - ${PROJECTS_DIR:-~/code}:/repos:rw
     restart: unless-stopped
 
-  ferron:
-    image: ferronserver/ferron:2
-    container_name: vibe-kanban-ferron
+  pingap:
+    image: vicanso/pingap:0.12.8-full
+    container_name: vibe-kanban-pingap
     depends_on:
       - vibe-kanban
     ports:
       - "80:80"
       - "443:443"
     volumes:
-      - ./ferron/ferron.kdl:/etc/ferron.kdl:ro
-      # Persistent automatic TLS (ACME) cache
-      - ferron-acme:/var/lib/ferron-acme
-      # Optional: manual TLS cert/key mount (see compose/ferron/ferron.kdl)
-      # - ./ferron/tls:/etc/ferron/tls:ro
+      - ./pingap/conf:/opt/pingap/conf:ro
+      - ./pingap/certs:/opt/pingap/certs:ro
+    environment:
+      - PINGAP_CONF=/opt/pingap/conf
+    command:
+      - pingap
+      - --autoreload
     restart: unless-stopped
-
-volumes:
-  ferron-acme:

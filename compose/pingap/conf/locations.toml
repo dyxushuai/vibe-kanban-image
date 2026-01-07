@@ -1,0 +1,5 @@
+[locations.vibe]
+host = "kanban.example.com"
+path = "/"
+upstream = "vibe_kanban"
+enable_reverse_proxy_headers = true

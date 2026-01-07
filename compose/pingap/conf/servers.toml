@@ -1,0 +1,8 @@
+[servers.http]
+addr = "0.0.0.0:80"
+locations = ["vibe"]
+
+[servers.https]
+addr = "0.0.0.0:443"
+locations = ["vibe"]
+global_certificates = true

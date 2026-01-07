@@ -20,23 +20,24 @@ Then expose it:
 - ngrok:
   - `ngrok http 127.0.0.1:${PORT}`
 
-## Option B: Reverse proxy + auth (example)
+## Option B: Reverse proxy + TLS (example)
 
-This repo includes a Ferron example with automatic TLS + Basic Auth:
+This repo includes a Pingap example with **manual TLS** (file-based certs):
 
-- `docker compose -f compose/docker-compose.ferron.yml --env-file compose/.env up -d`
+- `docker compose -f compose/docker-compose.pingap.yml --env-file compose/.env up -d`
 
-You must edit `compose/ferron/ferron.kdl`:
+You must edit the Pingap config:
 
-- Replace the domain (e.g. `kanban.example.com`)
-- For automatic TLS: set `auto_tls_contact` (email) and leave `auto_tls` enabled
-- (Optional) if you're behind Cloudflare / another HTTPS proxy: use `auto_tls_challenge "http-01"`
-- (Optional) for manual TLS: set `tls "<cert>" "<key>"` and mount `./compose/ferron/tls` → `/etc/ferron/tls` (see `compose/docker-compose.ferron.yml`)
-- (Optional) enable Basic Auth by uncommenting `status`/`user` lines
+- Replace the domain (e.g. `kanban.example.com`) in:
+  - `compose/pingap/conf/locations.toml`
+  - `compose/pingap/conf/certificates.toml`
+- Place your TLS cert/key files at:
+  - `compose/pingap/certs/fullchain.pem`
+  - `compose/pingap/certs/privkey.pem`
 
-To generate a password hash (paste it into `user "admin" "<hash>"`):
+After updating certs, restart the proxy:
 
-- `docker run --rm -it ferronserver/ferron:2 /usr/sbin/ferron-passwd`
+- `docker compose -f compose/docker-compose.pingap.yml --env-file compose/.env restart pingap`
 
 ## Editor integration (Remote SSH)
 

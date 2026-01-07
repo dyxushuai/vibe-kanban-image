@@ -1,0 +1,2 @@
+[upstreams.vibe_kanban]
+addrs = ["vibe-kanban:8080"]

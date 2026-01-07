@@ -1,0 +1,5 @@
+[certificates.vibe]
+domains = "kanban.example.com"
+tls_cert = "/opt/pingap/certs/fullchain.pem"
+tls_key = "/opt/pingap/certs/privkey.pem"
+is_default = true
