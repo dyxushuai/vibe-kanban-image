@@ -10,6 +10,10 @@ on:
         description: "Upstream tag/commit to build (defaults to UPSTREAM_REF)"
         required: false
         type: string
+      platforms:
+        description: "Docker platforms to build (defaults to linux/amd64)"
+        required: false
+        type: string
 
 permissions:
   contents: read
@@ -53,6 +57,11 @@ jobs:
             ref="${default_ref}"
           fi
 
+          platforms="${{ github.event.inputs.platforms }}"
+          if [[ -z "${platforms}" ]]; then
+            platforms="linux/amd64"
+          fi
+
           base="${ref%%-*}"
           is_default="false"
           if [[ "${ref}" == "${default_ref}" ]]; then
@@ -60,6 +69,7 @@ jobs:
           fi
 
           echo "ref=${ref}" >> "$GITHUB_OUTPUT"
+          echo "platforms=${platforms}" >> "$GITHUB_OUTPUT"
           echo "base=${base}" >> "$GITHUB_OUTPUT"
           echo "is_default=${is_default}" >> "$GITHUB_OUTPUT"
 
@@ -108,7 +118,7 @@ jobs:
         with:
           context: .
           file: docker/Dockerfile
-          platforms: linux/amd64,linux/arm64
+          platforms: ${{ steps.vars.outputs.platforms }}
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
