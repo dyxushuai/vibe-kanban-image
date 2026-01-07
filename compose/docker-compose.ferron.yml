@@ -22,10 +22,11 @@ services:
       - "443:443"
     volumes:
       - ./ferron/ferron.kdl:/etc/ferron.kdl:ro
-      # Needed for persistent automatic TLS cache
-      - ferron-acme:/var/cache/ferron-acme
+      # Persistent automatic TLS (ACME) cache
+      - ferron-acme:/var/lib/ferron-acme
+      # Optional: manual TLS cert/key mount (see compose/ferron/ferron.kdl)
+      # - ./ferron/tls:/etc/ferron/tls:ro
     restart: unless-stopped
 
 volumes:
   ferron-acme:
-

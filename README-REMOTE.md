@@ -29,6 +29,9 @@ This repo includes a Ferron example with automatic TLS + Basic Auth:
 You must edit `compose/ferron/ferron.kdl`:
 
 - Replace the domain (e.g. `kanban.example.com`)
+- For automatic TLS: set `auto_tls_contact` (email) and leave `auto_tls` enabled
+- (Optional) if you're behind Cloudflare / another HTTPS proxy: use `auto_tls_challenge "http-01"`
+- (Optional) for manual TLS: set `tls "<cert>" "<key>"` and mount `./compose/ferron/tls` → `/etc/ferron/tls` (see `compose/docker-compose.ferron.yml`)
 - (Optional) enable Basic Auth by uncommenting `status`/`user` lines
 
 To generate a password hash (paste it into `user "admin" "<hash>"`):

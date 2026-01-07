@@ -4,9 +4,22 @@ globals {
 }
 
 // Replace "kanban.example.com" with your domain name.
-// - If the hostname doesn't look local and no port is specified, Ferron enables automatic TLS by default.
-// - Ensure port 80/443 are reachable (ACME challenge) and DNS points to this server.
+// - Ensure DNS points to this server and ports 80/443 are reachable (ACME challenge).
 kanban.example.com {
+  // TLS
+  // Automatic TLS (ACME / Let's Encrypt):
+  // - Replace "admin@example.com" with a real contact email.
+  auto_tls
+  auto_tls_contact "admin@example.com"
+  auto_tls_cache "/var/lib/ferron-acme"
+  auto_tls_letsencrypt_production
+
+  // If you're behind Cloudflare (orange cloud) or another HTTPS proxy, use HTTP-01:
+  // auto_tls_challenge "http-01"
+
+  // Manual TLS (use your own cert/key files instead of automatic TLS):
+  // tls "/etc/ferron/tls/fullchain.pem" "/etc/ferron/tls/privkey.pem"
+
   // Reverse proxy to Vibe Kanban (service name from docker compose)
   proxy "http://vibe-kanban:8080"
 
@@ -18,4 +31,3 @@ kanban.example.com {
   // status 401 realm="Vibe Kanban" users="admin"
   // user "admin" "<paste-hash-here>"
 }
-
