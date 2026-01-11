@@ -26,7 +26,7 @@ This repo does not vendor upstream source. To build locally:
 
 ## Notes
 
-- Container defaults: `HOST=0.0.0.0`, `PORT=8080`, `XDG_DATA_HOME=/data`.
+- Container defaults: `HOST=0.0.0.0`, `PORT=8080`, `XDG_DATA_HOME=/data` (app state lands under `/data/vibe-kanban`).
 - Image tags published by CI:
   - `${UPSTREAM_REF}` (exact upstream release tag)
   - `${UPSTREAM_REF%%-*}` (short version, e.g. `v0.0.144`)
