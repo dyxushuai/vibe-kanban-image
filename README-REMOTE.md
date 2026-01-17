@@ -12,6 +12,7 @@ Run Vibe Kanban on the server, bound to localhost only:
 
 - In `compose/docker-compose.yml`, change the port mapping to:
   - `127.0.0.1:${PORT}:${PORT}`
+  - `PORT` defaults to `8080` (set it in `compose/.env` if you need a different port)
 
 Then expose it:
 

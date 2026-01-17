@@ -6,6 +6,7 @@ This repo builds and publishes Docker images for `BloopAI/vibe-kanban`, without 
    - `cp compose/.env.example compose/.env`
 2. Edit `compose/.env`:
    - Set `PROJECTS_DIR` to the directory containing your git repos
+   - Optional: set `HOST`/`PORT` only if you need to override defaults
 3. Start:
    - `docker compose -f compose/docker-compose.yml --env-file compose/.env up -d`
 4. Open:
@@ -26,7 +27,7 @@ This repo does not vendor upstream source. To build locally:
 
 ## Notes
 
-- Container defaults: `HOST=0.0.0.0`, `PORT=8080`, `XDG_DATA_HOME=/data` (app state lands under `/data/vibe-kanban`).
+- Container defaults are set in the image entrypoint: `HOST=0.0.0.0`, `PORT=8080`, `XDG_DATA_HOME=/data` (app state lands under `/data/vibe-kanban`). Override `HOST`/`PORT` in `compose/.env` if needed.
 - Image tags published by CI:
   - `${UPSTREAM_REF}` (exact upstream release tag)
   - `${UPSTREAM_REF%%-*}` (short version, e.g. `v0.0.144`)
