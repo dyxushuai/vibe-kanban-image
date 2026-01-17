@@ -2,11 +2,11 @@ services:
   vibe-kanban:
     image: ${VIBE_KANBAN_IMAGE}:${VIBE_KANBAN_TAG}
     container_name: vibe-kanban
-    environment:
-      HOST: 0.0.0.0
-      PORT: 8080
     expose:
-      - "8080"
+      - "${PORT:-8080}"
+    environment:
+      - HOST
+      - PORT
     volumes:
       - ./data:/data
       - ${PROJECTS_DIR:-~/code}:/repos:rw

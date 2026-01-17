@@ -3,8 +3,8 @@ services:
     image: ${VIBE_KANBAN_IMAGE}:${VIBE_KANBAN_TAG}
     container_name: vibe-kanban
     environment:
-      HOST: ${HOST:-0.0.0.0}
-      PORT: ${PORT:-8080}
+      - HOST
+      - PORT
     ports:
       - "${PORT:-8080}:${PORT:-8080}"
     volumes:
@@ -13,4 +13,3 @@ services:
       # Give Vibe Kanban access to your git repos (worktrees are created inside these repos)
       - ${PROJECTS_DIR:-~/code}:/repos:rw
     restart: unless-stopped
-
